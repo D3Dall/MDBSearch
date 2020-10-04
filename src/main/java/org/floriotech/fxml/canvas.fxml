@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="540.0" prefWidth="960.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="465.0" prefWidth="214.0" style="-fx-background-color: #0070B8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="70.0" fitWidth="92.0" layoutX="84.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="450.0" AnchorPane.leftAnchor="84.0" AnchorPane.rightAnchor="84.0" AnchorPane.topAnchor="20.0">
+               <image>
+                  <Image url="@../images/logo.png" />
+               </image></ImageView>
+            <Text fill="WHITE" layoutY="112.265625" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Roboto;" text="MongoDB Editor" textAlignment="CENTER" wrappingWidth="237.33333333333343" AnchorPane.topAnchor="90.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <AnchorPane layoutY="144.0" prefHeight="63.0" prefWidth="129.0" style="-fx-background-color: #65ABD8;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Text fill="WHITE" layoutX="25.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Roboto;" text="Connexion courante" textAlignment="CENTER" wrappingWidth="187.99998982747394" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.00001017252606" AnchorPane.topAnchor="4.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <JFXComboBox layoutX="32.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" AnchorPane.leftAnchor="32.0" />
+                  <JFXButton layoutX="163.0" layoutY="27.0" prefHeight="25.0" prefWidth="26.0" textAlignment="CENTER" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutY="207.0" prefHeight="63.0" prefWidth="237.0" style="-fx-background-color: #65ABD8;">
+               <children>
+                  <Text fill="WHITE" layoutX="7.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Roboto;" text="Base de données courante" textAlignment="CENTER" wrappingWidth="223.33336385091144" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="4.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <JFXComboBox layoutX="40.0" layoutY="19.0" prefHeight="25.0" prefWidth="155.0" AnchorPane.leftAnchor="40.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="237.0" prefHeight="49.0" prefWidth="723.0" style="-fx-background-color: #0070B8;" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane layoutY="3.0" prefHeight="40.0" prefWidth="92.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="238.0" layoutY="49.0" prefHeight="11.0" prefWidth="466.0" style="-fx-background-color: #BBB7B7;" AnchorPane.leftAnchor="238.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Text layoutX="15.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Roboto;" text="type de la fiche" wrappingWidth="133.33336385091144" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="238.0" layoutY="68.0" prefHeight="472.0" prefWidth="722.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="238.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="68.0">
+         <children>
+            <TextArea layoutX="7.0" layoutY="14.0" prefHeight="200.0" prefWidth="722.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
