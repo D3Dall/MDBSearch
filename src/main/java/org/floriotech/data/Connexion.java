@@ -25,6 +25,6 @@ public class Connexion {
     }
 
     public String getConnexionString(){
-        return "mongodb://" + adress + ":" + name;
+        return "mongodb://" + adress + ":" + port;
     }
 }

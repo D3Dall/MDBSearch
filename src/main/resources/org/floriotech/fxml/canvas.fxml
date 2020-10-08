@@ -2,67 +2,129 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import javafx.scene.control.TextArea?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="540.0" prefWidth="960.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.floriotech.controllers.CanvasController">
+<AnchorPane id="AnchorPane" prefHeight="549.0" prefWidth="960.0" styleClass="canvas.css" stylesheets="@../style/canvas.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.floriotech.controllers.CanvasController">
    <children>
-      <AnchorPane prefHeight="465.0" prefWidth="214.0" style="-fx-background-color: #0070B8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar layoutY="1.0" prefHeight="25.0" prefWidth="107.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <AnchorPane layoutY="25.0" prefHeight="540.0" prefWidth="238.0" style="-fx-background-color: #0070B8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="25.0">
          <children>
-            <ImageView fitHeight="70.0" fitWidth="92.0" layoutX="84.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="450.0" AnchorPane.leftAnchor="84.0" AnchorPane.rightAnchor="84.0" AnchorPane.topAnchor="20.0">
+            <ImageView fitHeight="70.0" fitWidth="92.0" layoutX="84.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="419.0" AnchorPane.leftAnchor="84.0" AnchorPane.rightAnchor="84.0" AnchorPane.topAnchor="51.0">
                <image>
                   <Image url="@../images/logo.png" />
                </image></ImageView>
-            <Text fill="WHITE" layoutY="112.265625" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Roboto;" text="MongoDB Editor" textAlignment="CENTER" wrappingWidth="237.33333333333343" AnchorPane.topAnchor="90.0">
+            <Text fill="WHITE" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Roboto;" text="MongoDB Editor" textAlignment="CENTER" wrappingWidth="237.33333333333343" AnchorPane.topAnchor="120.734375">
                <font>
                   <Font size="24.0" />
                </font>
             </Text>
-            <AnchorPane layoutY="144.0" prefHeight="63.0" prefWidth="129.0" style="-fx-background-color: #65ABD8;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <AnchorPane layoutY="176.0" prefHeight="63.0" prefWidth="129.0" style="-fx-background-color: #65ABD8;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <Text fill="WHITE" layoutX="25.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Roboto;" text="Connexion courante" textAlignment="CENTER" wrappingWidth="187.99998982747394" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.00001017252606" AnchorPane.topAnchor="4.0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Text>
-                  <JFXComboBox layoutX="32.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" AnchorPane.leftAnchor="32.0" />
-                  <JFXButton layoutX="163.0" layoutY="27.0" prefHeight="25.0" prefWidth="26.0" textAlignment="CENTER" />
+                  <JFXComboBox fx:id="connexionsList" layoutX="32.0" layoutY="24.0" onAction="#changeActualConnexion" onShowing="#updateListOfConnexions" prefHeight="25.0" prefWidth="139.0" promptText="Choisir une connexion" AnchorPane.leftAnchor="32.0" />
+                  <JFXButton ellipsisString="" layoutX="172.0" layoutY="24.0" onAction="#openAddingConnexionWindow" prefHeight="25.0" prefWidth="29.0" styleClass="button-add" textAlignment="CENTER">
+                     <font>
+                        <Font size="1.0" />
+                     </font></JFXButton>
                </children>
             </AnchorPane>
-            <AnchorPane layoutY="207.0" prefHeight="63.0" prefWidth="237.0" style="-fx-background-color: #65ABD8;">
+            <AnchorPane layoutY="239.0" prefHeight="63.0" prefWidth="237.0" style="-fx-background-color: #65ABD8;">
                <children>
                   <Text fill="WHITE" layoutX="7.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Roboto;" text="Base de données courante" textAlignment="CENTER" wrappingWidth="223.33336385091144" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="4.0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Text>
-                  <JFXComboBox layoutX="40.0" layoutY="19.0" prefHeight="25.0" prefWidth="155.0" AnchorPane.leftAnchor="40.0" />
+                  <JFXComboBox fx:id="dataBasesList" layoutX="40.0" layoutY="19.0" onAction="#changeActualDataBase" prefHeight="25.0" prefWidth="155.0" promptText="Choisir une base de données" AnchorPane.leftAnchor="40.0" />
                </children>
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="237.0" prefHeight="49.0" prefWidth="723.0" style="-fx-background-color: #0070B8;" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane layoutX="238.0" layoutY="25.0" prefHeight="52.0" prefWidth="722.0" style="-fx-background-color: #0070B8;" AnchorPane.leftAnchor="238.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
          <children>
-            <AnchorPane layoutY="3.0" prefHeight="40.0" prefWidth="92.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="238.0" layoutY="49.0" prefHeight="11.0" prefWidth="466.0" style="-fx-background-color: #BBB7B7;" AnchorPane.leftAnchor="238.0" AnchorPane.rightAnchor="0.0">
-         <children>
-            <Text layoutX="15.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Roboto;" text="type de la fiche" wrappingWidth="133.33336385091144" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="0.0">
+            <Text fill="WHITE" layoutX="14.0" layoutY="36.056640625" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom du fichier" wrappingWidth="484.80340576171875" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0">
                <font>
-                  <Font size="14.0" />
+                  <Font size="26.0" />
                </font>
             </Text>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="238.0" layoutY="68.0" prefHeight="472.0" prefWidth="722.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="238.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="68.0">
-         <children>
-            <TextArea layoutX="7.0" layoutY="14.0" prefHeight="200.0" prefWidth="722.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
+      <JFXTabPane layoutX="238.0" layoutY="77.0" prefHeight="489.0" prefWidth="722.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="238.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="77.0">
+         <tabs>
+            <Tab text="Fiche de recherche">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="722.0" stylesheets="@../style/canvas.css">
+                     <children>
+                        <JFXTextArea fx:id="result" editable="false" layoutX="68.0" layoutY="116.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </JFXTextArea>
+                        <AnchorPane layoutX="428.0" layoutY="14.0" prefHeight="163.0" prefWidth="267.0" style="-fx-background-color: #0070B8;" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="14.0">
+                           <children>
+                              <Text fill="WHITE" layoutX="114.0" layoutY="20.58203125" strokeType="OUTSIDE" strokeWidth="0.0" text="Rechercher" textAlignment="CENTER" wrappingWidth="266.22784423828125" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Text>
+                              <Text fill="WHITE" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Collection :" wrappingWidth="104.66664632161456" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="44.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Text>
+                              <Text fill="WHITE" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mots clefs :" wrappingWidth="104.66664632161456" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="74.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Text>
+                               <JFXComboBox fx:id="collectionList" layoutX="119.0" layoutY="50.0" onAction="#changeActualCollection" onShowing="#updateInputCollectionsList" prefHeight="25.0" prefWidth="155.0" AnchorPane.leftAnchor="107.33333333333334" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="50.0" />
+                              <JFXTextField fx:id="keyWord" layoutX="108.0" layoutY="75.0" prefHeight="25.0" prefWidth="155.0" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="75.0" />
+                              <JFXButton layoutX="20.0" layoutY="117.0" onAction="#searchDocument" prefHeight="25.0" prefWidth="139.0" text="Lancer la recherche" AnchorPane.bottomAnchor="21.00000000000001" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab disable="true" text="Requêtes libres">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
    </children>
 </AnchorPane>

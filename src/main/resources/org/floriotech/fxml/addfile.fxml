@@ -28,8 +28,8 @@
             </Text>
             <Text layoutX="42.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la fiche :" wrappingWidth="113.087890625" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="90.0" />
             <JFXTextField layoutX="148.0" layoutY="85.0" prefHeight="25.0" prefWidth="135.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="83.0" />
-            <JFXButton layoutX="123.0" layoutY="309.0" prefHeight="32.0" prefWidth="128.0" style="-fx-border-color: LIGHTGREY; -fx-border-radius: 5; -fx-border-width: 2; -fx-background-color: LIGHTGREY;" text="Annuler" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="123.0" />
-            <JFXButton layoutX="448.0" layoutY="309.0" prefHeight="32.0" prefWidth="128.0" style="-fx-border-color: #5cb85c; -fx-border-radius: 5; -fx-border-width: 2; -fx-background-color: #5cb85c;" text="Terminer" textFill="WHITE" AnchorPane.bottomAnchor="54.0" AnchorPane.rightAnchor="124.0" />
+            <JFXButton layoutX="123.0" layoutY="332.0" prefHeight="32.0" prefWidth="128.0" style="-fx-border-color: LIGHTGREY; -fx-border-radius: 5; -fx-border-width: 2; -fx-background-color: LIGHTGREY;" text="Annuler" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="123.0" />
+            <JFXButton layoutX="448.0" layoutY="332.0" prefHeight="32.0" prefWidth="128.0" style="-fx-border-color: #5cb85c; -fx-border-radius: 5; -fx-border-width: 2; -fx-background-color: #5cb85c;" text="Terminer" textFill="WHITE" AnchorPane.bottomAnchor="31.0" AnchorPane.rightAnchor="124.0" />
             <JFXRadioButton layoutX="39.0" layoutY="126.0" prefHeight="17.0" prefWidth="249.0" text="Fiche simple (.txt)" />
             <JFXRadioButton layoutX="39.0" layoutY="154.0" prefHeight="17.0" prefWidth="249.0" text="Fiche de recherche (.mdbe)" />
             <Line endX="84.0" endY="-9.5" layoutX="271.0" layoutY="173.0" startX="84.0" startY="-110.0" stroke="#0070b8" style="-fx-stroke-dash-array: 2;" />
@@ -67,6 +67,7 @@
                   <Image url="@../images/icones/icons8-sheet.png" />
                </image></ImageView>
             <ComboBox layoutX="438.0" layoutY="250.0" prefWidth="150.0" style="-fx-background-color: lightgrey;" />
+            <Text fx:id="validationText" layoutX="10.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="678.2734375" AnchorPane.bottomAnchor="81.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="11.7265625" />
          </children>
       </AnchorPane>
    </children>
