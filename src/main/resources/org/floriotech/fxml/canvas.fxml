@@ -55,7 +55,7 @@
                      </font>
                   </Text>
                   <JFXComboBox fx:id="connexionsList" layoutX="32.0" layoutY="24.0" onAction="#changeActualConnexion" onShowing="#updateListOfConnexions" prefHeight="25.0" prefWidth="139.0" promptText="Choisir une connexion" AnchorPane.leftAnchor="32.0" />
-                  <JFXButton ellipsisString="" layoutX="172.0" layoutY="24.0" onAction="#openAddingConnexionWindow" prefHeight="25.0" prefWidth="29.0" styleClass="button-add" textAlignment="CENTER">
+                  <JFXButton ellipsisString="" layoutX="172.0" layoutY="24.0" onAction="#openAddingConnexionWindow" prefHeight="25.0" prefWidth="29.0" style="-fx-background-color: Grey;" styleClass="button-add" textAlignment="CENTER">
                      <font>
                         <Font size="1.0" />
                      </font></JFXButton>
@@ -93,7 +93,7 @@
                               <Font size="16.0" />
                            </font>
                         </JFXTextArea>
-                        <AnchorPane layoutX="428.0" layoutY="14.0" prefHeight="163.0" prefWidth="267.0" style="-fx-background-color: #0070B8;" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="14.0">
+                        <AnchorPane layoutX="428.0" layoutY="14.0" prefHeight="183.0" prefWidth="269.0" style="-fx-background-color: #0070B8;" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="14.0">
                            <children>
                               <Text fill="WHITE" layoutX="114.0" layoutY="20.58203125" strokeType="OUTSIDE" strokeWidth="0.0" text="Rechercher" textAlignment="CENTER" wrappingWidth="266.22784423828125" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                                  <font>
@@ -105,14 +105,20 @@
                                     <Font size="20.0" />
                                  </font>
                               </Text>
-                              <Text fill="WHITE" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mots clefs :" wrappingWidth="104.66664632161456" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="74.0">
+                              <Text fill="WHITE" layoutX="5.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attribut" wrappingWidth="104.66664632161456" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="77.41796875">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Text>
                                <JFXComboBox fx:id="collectionList" layoutX="119.0" layoutY="50.0" onAction="#changeActualCollection" onShowing="#updateInputCollectionsList" prefHeight="25.0" prefWidth="155.0" AnchorPane.leftAnchor="107.33333333333334" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="50.0" />
-                              <JFXTextField fx:id="keyWord" layoutX="108.0" layoutY="75.0" prefHeight="25.0" prefWidth="155.0" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="75.0" />
-                              <JFXButton layoutX="20.0" layoutY="117.0" onAction="#searchDocument" prefHeight="25.0" prefWidth="139.0" text="Lancer la recherche" AnchorPane.bottomAnchor="21.00000000000001" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+                              <JFXTextField fx:id="Attribut" layoutX="107.0" layoutY="77.0" prefHeight="25.0" prefWidth="155.0" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="77.0" />
+                              <JFXButton layoutX="20.0" layoutY="127.0" onAction="#searchDocument" prefHeight="35.0" prefWidth="227.0" style="-fx-background-color: white;" text="Lancer la recherche" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+                              <Text fill="WHITE" layoutX="5.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valeur" wrappingWidth="104.66664632161456">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Text>
+                              <JFXTextField fx:id="Valeur" layoutX="110.0" layoutY="111.0" prefHeight="25.0" prefWidth="155.0" />
                            </children>
                         </AnchorPane>
                      </children>

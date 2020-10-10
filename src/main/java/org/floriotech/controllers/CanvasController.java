@@ -4,8 +4,11 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.mongodb.MongoClient;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +30,7 @@ import org.floriotech.data.MongoDBEditorData;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class CanvasController implements Initializable {
@@ -45,7 +49,10 @@ public class CanvasController implements Initializable {
 
 
     @FXML
-    private JFXTextField keyWord;
+    private JFXTextField Attribut;
+
+    @FXML
+    private JFXTextField Valeur;
 
     @FXML
     private JFXTextArea result;
@@ -195,21 +202,34 @@ public class CanvasController implements Initializable {
 
     public void searchDocument(){
         System.out.println("search ...");
-        String word = keyWord.getText();
-        if(word.trim().isEmpty()){
+        String attribut = Attribut.getText();
+        String valeur = Valeur.getText();
+        if(attribut.trim().isEmpty() || valeur.trim().isEmpty()){
            return;
         }
 
-        Document doc = (Document) instance.getCollection().find().first();
-        Bson bson = doc;
-        BsonDocument bsonDocument = bson.toBsonDocument(BsonDocument.class, MongoClient.getDefaultCodecRegistry());
+        String stringResult = "";
+        AggregateIterable<Document> documents =
+                instance.getCollection().aggregate(
+                        Arrays.asList(
+                                Aggregates.match(Filters.eq(attribut, valeur))
+                        ));
+        Boolean isEmpty = !documents.iterator().hasNext();
+        for (MongoCursor<Document> it = documents.iterator(); it.hasNext();){
+            Document doc = it.next();
+            Bson bson = doc;
+            BsonDocument bsonDocument = bson.toBsonDocument(BsonDocument.class, MongoClient.getDefaultCodecRegistry());
+            JsonWriterSettings.Builder settingsBuilder = JsonWriterSettings.builder().indent(true);
+            settingsBuilder.indentCharacters("      ");
+            System.out.println("[\n" + bsonDocument.toJson(settingsBuilder.build()) + "\n]");
+            stringResult += "[\n" + bsonDocument.toJson(settingsBuilder.build()) + "\n]";
+        }
+        if(isEmpty){
+            stringResult += "Aucun document n'a été trouvé.";
+        }
+        //BsonDocument bsonDocument = (BsonDocument) instance.getCollection().aggregate(Arrays.asList(Aggregates.match(Filters.eq(attribut, valeur)))).toBsonDocument(BsonDocument.class, MongoClient.getDefaultCodecRegistry());
 
-        JsonWriterSettings.Builder settingsBuilder = JsonWriterSettings.builder().indent(true);
-        settingsBuilder.indentCharacters("      ");
 
-        System.out.println("0"+bsonDocument.toJson(settingsBuilder.build()));
-
-        result.setText(bsonDocument.toJson(settingsBuilder.build()));
-
+        result.setText(stringResult);
     }
 }
