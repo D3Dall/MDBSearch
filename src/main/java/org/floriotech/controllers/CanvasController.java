@@ -102,7 +102,7 @@ public class CanvasController extends Controller{
             }else{
                 Connexion connexion = instance.getConnexionList().stream().filter(cnx -> cnx.getName().equals(cnxName)).findFirst().orElse(null);
                 if(connexion == null ){
-                    throw new Exception("blabla");
+                    openMessageWindow(new Message("La connexion n'existe pas !", MessageType.Error));
                 }
                 try {
                     instance.setMongoClient(connexion.getConnexionString());
