@@ -4,25 +4,16 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.mongodb.MongoClient;
-import com.mongodb.client.AggregateIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.json.JsonWriterSettings;
-import org.floriotech.App;
 import org.floriotech.data.Connexion;
 import org.floriotech.data.MDBSearchData;
 import org.floriotech.data.Message;
@@ -185,6 +176,7 @@ public class CanvasController extends Controller{
                     return;
                 }
                 instance.setCollection(collName);
+                searchAllDocument();
             }
         }
     /* ------------ Connexion methods  ------------- */
@@ -204,25 +196,27 @@ public class CanvasController extends Controller{
     /**
      *  Recherche et affiche le resultat d'une recherche d'un document en fonction d'une clé et de sa valeur
      */
+        private void searchAllDocument(){
+            FindIterable<Document> documents = instance.getCollection().find();
+            writeResult(documents);
+        }
+
         public void searchDocument(){
-            String keywordText = keyword.getText();
-            String valueText = value.getText();
-            if(!checkSearchingElements()) {
+            if(!checkConnexionElements()){
+                return;
+            }
+            if(keyword.getText().trim().isEmpty() && value.getText().trim().isEmpty()) {
+                searchAllDocument();
+                return;
+            }
+            if(!checkSearchingElements()){
                 return;
             }
             AggregateIterable<Document> documents = executeSearchingRequest();
             writeResult(documents);
         }
 
-        private boolean checkSearchingElements(){
-            if(keyword.getText().trim().isEmpty()){
-                openMessageWindow(new Message("Veuillez entrer une clé",MessageType.Error));
-                return false;
-            }
-            if(value.getText().trim().isEmpty()){
-                openMessageWindow(new Message("Veuillez entrer une valeur",MessageType.Error));
-                return false;
-            }
+        private boolean checkConnexionElements(){
             if(instance.getMongoClient() == null){
                 openMessageWindow(new Message("Veuillez entrer une connexion",MessageType.Error));
                 return false;
@@ -238,6 +232,18 @@ public class CanvasController extends Controller{
             return true;
         }
 
+        private boolean checkSearchingElements(){
+            if(keyword.getText().trim().isEmpty()){
+                openMessageWindow(new Message("Veuillez entrer une clé",MessageType.Error));
+                return false;
+            }
+            if(value.getText().trim().isEmpty()){
+                openMessageWindow(new Message("Veuillez entrer une valeur",MessageType.Error));
+                return false;
+            }
+            return true;
+        }
+
         private AggregateIterable<Document> executeSearchingRequest(){
             return instance.getCollection().aggregate(
                         Arrays.asList(
@@ -245,7 +251,7 @@ public class CanvasController extends Controller{
                         ));
         }
 
-        private void writeResult(AggregateIterable<Document> documents){
+        private void writeResult(MongoIterable<Document> documents){
             if(!documents.iterator().hasNext()){
                 result.setText("Aucun document n'a été trouvé.");
             }else{
