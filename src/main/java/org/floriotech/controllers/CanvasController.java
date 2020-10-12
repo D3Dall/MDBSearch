@@ -12,224 +12,255 @@ import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.StringConverter;
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.json.JsonWriterSettings;
 import org.floriotech.App;
 import org.floriotech.data.Connexion;
-import org.floriotech.data.MongoDBEditorData;
+import org.floriotech.data.MDBSearchData;
+import org.floriotech.data.Message;
+import org.floriotech.data.MessageType;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
-public class CanvasController implements Initializable {
+public class CanvasController extends Controller{
 
-    @FXML
-    private JFXTextField searchingTextField;
+    /* ---------------------------------------- VARIABLE ---------------------------------------- */
+        /* ------------ Connexion ------------- */
+            @FXML
+            private JFXComboBox connexionsList;
 
-    @FXML
-    private JFXComboBox connexionsList;
+            @FXML
+            private JFXComboBox dataBasesList;
 
-    @FXML
-    private JFXComboBox dataBasesList;
-
-    @FXML
-    private JFXComboBox collectionList;
+            @FXML
+            private JFXComboBox collectionList;
+        /* ------------ Connexion ------------- */
 
 
-    @FXML
-    private JFXTextField Attribut;
+        /* ------------ Params ------------- */
+        @FXML
+        private JFXTextField keyword;
 
-    @FXML
-    private JFXTextField Valeur;
+        @FXML
+        private JFXTextField value;
+        /* ------------ Params ------------- */
 
-    @FXML
-    private JFXTextArea result;
 
-    private MongoDBEditorData instance;
+        /* ------------ Result ------------- */
+        @FXML
+        private JFXTextArea result;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        //On configure les comboBox
-        connexionsList.setConverter(new StringConverter<Label>() {
-            @Override
-            public String toString(Label o) {
-                return o==null? "" : o.getText();
+        private MDBSearchData instance;
+        /* ------------ Result ------------- */
+    /* ---------------------------------------- VARIABLE ---------------------------------------- */
+
+
+
+
+    /* ---------------------------------------- METHODS ---------------------------------------- */
+
+    /* ------------ Override methods ------------- */
+        @Override
+        public void initialize(URL url, ResourceBundle resourceBundle) {
+            try {
+                instance = MDBSearchData.getInstance();
+            } catch (IOException | ClassNotFoundException e) {
+                openMessageWindow(new Message("Impossible de charger les données : " + e.getMessage(), MessageType.Error));
             }
+        }
+        @Override
+        public Stage getStage() {
+            return (Stage) result.getScene().getWindow();
+        }
+    /* ------------ Override methods  ------------- */
 
-            @Override
-            public Label fromString(String s) {
-                return new Label(s);
-            }
-        });
-        dataBasesList.setConverter(new StringConverter<Label>() {
-            @Override
-            public String toString(Label o) {
-                return o==null? "" : o.getText();
-            }
 
-            @Override
-            public Label fromString(String s) {
-                return new Label(s);
+    /* ------------ Connexion methods  ------------- */
+        /**
+         *  IHM : Met à jours le choix des connexions possible.
+         */
+        public void updateListOfConnexions(){
+            connexionsList.getItems().clear();
+            for(Connexion cnx : instance.getConnexionList()){
+                connexionsList.getItems().add(new Label(cnx.getName()));
             }
-        });
-        collectionList.setConverter(new StringConverter<Label>() {
-            @Override
-            public String toString(Label o) {
-                return o==null? "" : o.getText();
-            }
+        }
 
-            @Override
-            public Label fromString(String s) {
-                return new Label(s);
+        /**
+         * Change la connexion actuel de l'application
+         * @throws Exception La connexion n'existe plus
+         */
+        public void changeActualConnexion() throws Exception {
+            if (connexionsList.getValue() == null){
+                return;
             }
-        });
-        instance = MongoDBEditorData.getInstance();
-    }
+            String cnxName = ((Label) connexionsList.getValue()).getText();
+            if(cnxName.trim().isEmpty()){
+                instance.unsetMongoClient();
+            }else{
+                Connexion connexion = instance.getConnexionList().stream().filter(cnx -> cnx.getName().equals(cnxName)).findFirst().orElse(null);
+                if(connexion == null ){
+                    throw new Exception("blabla");
+                }
+                try {
+                    instance.setMongoClient(connexion.getConnexionString());
+                }catch (Exception e){
+                    openMessageWindow(new Message("Impossible de charger la connexion : " + e.getMessage(), MessageType.Error));
+                    instance.unsetMongoClient();
+                }
+                updateInputDataBasesList();
+            }
+        }
 
+        /**
+         *  IHM : Met à jours le choix des bases de données possibles.
+         */
+        public void updateInputDataBasesList(){
+            dataBasesList.getItems().clear();
+            for(String dbNames : instance.getMongoClient().listDatabaseNames()) {
+                dataBasesList.getItems().add(new Label(dbNames));
+            }
+        }
+
+        /**
+         * Change la base de données actuelle de l'application
+         * @throws Exception
+         */
+        public void changeActualDataBase() throws Exception {
+            if (dataBasesList.getValue() == null){
+                return;
+            }
+            String dbName = ((Label) dataBasesList.getValue()).getText();
+            if(dbName.trim().isEmpty()){
+                instance.unsetDatabase();
+            }else{
+                MongoDatabase database = instance.getMongoClient().getDatabase(dbName);
+                if(database == null ){
+                    openMessageWindow(new Message("La base de données n'existe pas !", MessageType.Error));
+                    instance.unsetDatabase();
+                    return;
+                }
+                instance.setDatabase(dbName);
+                updateInputCollectionsList();
+            }
+        }
+
+        /**
+         *  IHM : Met à jours le choix des collections possibles.
+         */
+        public void updateInputCollectionsList(){
+            collectionList.getItems().clear();
+            for(String collNames : instance.getDatabase().listCollectionNames()) {
+                collectionList.getItems().add(new Label(collNames));
+            }
+        }
+
+        /**
+         * Change la base de données actuelle de l'application
+         * @throws Exception
+         */
+        public void changeActualCollection() throws Exception {
+            if (collectionList.getValue() == null){
+                return;
+            }
+            String collName = ((Label) collectionList.getValue()).getText();
+            if(collName.trim().isEmpty()){
+                instance.unsetCollection();
+            }else{
+                MongoCollection collection = instance.getDatabase().getCollection(collName);
+                if(collName == null ){
+                    openMessageWindow(new Message("La collection n'existe pas !", MessageType.Error));
+                    instance.unsetCollection();
+                    return;
+                }
+                instance.setCollection(collName);
+            }
+        }
+    /* ------------ Connexion methods  ------------- */
+
+
+    /* ------------ Opening windows methods  ------------- */
+        /**
+         * Ouvre la fenêtre permettant d'ajouter et enregistrer une nouvelle connexion
+         */
+        public void openAddingConnexionWindow(){
+            openNewWindow("addconnexion");
+        }
+    /* ------------ Opening windows methods  ------------- */
+
+
+    /* ------------ Research methods  ------------- */
     /**
-     *  IHM : Met à jours le choix des connexions possible.
+     *  Recherche et affiche le resultat d'une recherche d'un document en fonction d'une clé et de sa valeur
      */
-    public void updateListOfConnexions(){
-        //On supprime tous les items de la comboBox
-        connexionsList.getItems().clear();
-        //Pour toutes les connexions présentes dans la BD, on ajoute un item
-        for(Connexion cnx : instance.getConnexionList()){
-            connexionsList.getItems().add(new Label(cnx.getName()));
-        }
-    }
-
-    /**
-     * Change la connexion actuel de l'application
-     * @throws Exception La connexion n'existe plus
-     */
-    public void changeActualConnexion() throws Exception {
-        String cnxName = ((Label) connexionsList.getValue()).getText();
-        if(cnxName.trim().isEmpty()){
-            instance.unsetMongoClient();
-        }else{
-            System.out.println(cnxName);
-            Connexion connexion = instance.getConnexionList().stream().filter(cnx -> cnx.getName().equals(cnxName)).findFirst().orElse(null);
-            if(connexion == null ){
-                throw new Exception("blabla");
+        public void searchDocument(){
+            String keywordText = keyword.getText();
+            String valueText = value.getText();
+            if(!checkSearchingElements()) {
+                return;
             }
-            instance.setMongoClient(connexion.getConnexionString());
-            updateInputDataBasesList();
+            AggregateIterable<Document> documents = executeSearchingRequest();
+            writeResult(documents);
         }
-    }
 
-    /**
-     *  IHM : Met à jours le choix des bases de données possibles.
-     */
-    public void updateInputDataBasesList(){
-        dataBasesList.getItems().clear();
-        for(String dbNames : instance.getMongoClient().listDatabaseNames()) {
-            dataBasesList.getItems().add(new Label(dbNames));
-        }
-    }
-
-    /**
-     * Change la base de données actuelle de l'application
-     * @throws Exception
-     */
-    public void changeActualDataBase() throws Exception {
-        String dbName = ((Label) dataBasesList.getValue()).getText();
-        if(dbName.trim().isEmpty()){
-            instance.unsetDatabase();
-        }else{
-            MongoDatabase database = instance.getMongoClient().getDatabase(dbName);
-            if(dbName == null ){
-                throw new Exception("bloblo");
+        private boolean checkSearchingElements(){
+            if(keyword.getText().trim().isEmpty()){
+                openMessageWindow(new Message("Veuillez entrer une clé",MessageType.Error));
+                return false;
             }
-            instance.setDatabase(dbName);
-            updateInputCollectionsList();
-        }
-    }
-
-    /**
-     *  IHM : Met à jours le choix des collections possibles.
-     */
-    public void updateInputCollectionsList(){
-        collectionList.getItems().clear();
-        for(String collNames : instance.getDatabase().listCollectionNames()) {
-            collectionList.getItems().add(new Label(collNames));
-        }
-    }
-
-    /**
-     * Change la base de données actuelle de l'application
-     * @throws Exception
-     */
-    public void changeActualCollection() throws Exception {
-        String collName = ((Label) collectionList.getValue()).getText();
-        if(collName.trim().isEmpty()){
-            instance.unsetCollection();
-        }else{
-            MongoCollection collection = instance.getDatabase().getCollection(collName);
-            if(collName == null ){
-                throw new Exception("blobloAI");
+            if(value.getText().trim().isEmpty()){
+                openMessageWindow(new Message("Veuillez entrer une valeur",MessageType.Error));
+                return false;
             }
-            instance.setCollection(collName);
-        }
-    }
-
-    public void openAddingConnexionWindow(){
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("fxml/addconnexion.fxml"));
-            Parent root = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.setTitle("Ajouter une connexion");
-            stage.setScene(new Scene(root));
-            stage.show();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
-
-    public void searchDocument(){
-        System.out.println("search ...");
-        String attribut = Attribut.getText();
-        String valeur = Valeur.getText();
-        if(attribut.trim().isEmpty() || valeur.trim().isEmpty()){
-           return;
+            if(instance.getMongoClient() == null){
+                openMessageWindow(new Message("Veuillez entrer une connexion",MessageType.Error));
+                return false;
+            }
+            if(instance.getDatabase() == null){
+                openMessageWindow(new Message("Veuillez entrer une base de données",MessageType.Error));
+                return false;
+            }
+            if(instance.getCollection() == null){
+                openMessageWindow(new Message("Veuillez entrer une collection",MessageType.Error));
+                return false;
+            }
+            return true;
         }
 
-        String stringResult = "";
-        AggregateIterable<Document> documents =
-                instance.getCollection().aggregate(
+        private AggregateIterable<Document> executeSearchingRequest(){
+            return instance.getCollection().aggregate(
                         Arrays.asList(
-                                Aggregates.match(Filters.eq(attribut, valeur))
+                                Aggregates.match(Filters.eq(keyword.getText(), value.getText()))
                         ));
-        Boolean isEmpty = !documents.iterator().hasNext();
-        for (MongoCursor<Document> it = documents.iterator(); it.hasNext();){
-            Document doc = it.next();
-            Bson bson = doc;
-            BsonDocument bsonDocument = bson.toBsonDocument(BsonDocument.class, MongoClient.getDefaultCodecRegistry());
-            JsonWriterSettings.Builder settingsBuilder = JsonWriterSettings.builder().indent(true);
-            settingsBuilder.indentCharacters("      ");
-            System.out.println("[\n" + bsonDocument.toJson(settingsBuilder.build()) + "\n]");
-            stringResult += "[\n" + bsonDocument.toJson(settingsBuilder.build()) + "\n]";
         }
-        if(isEmpty){
-            stringResult += "Aucun document n'a été trouvé.";
+
+        private void writeResult(AggregateIterable<Document> documents){
+            if(!documents.iterator().hasNext()){
+                result.setText("Aucun document n'a été trouvé.");
+            }else{
+                String stringResult = "";
+                for (MongoCursor<Document> it = documents.iterator(); it.hasNext();){
+                    Document doc = it.next();
+                    Bson bson = doc;
+                    BsonDocument bsonDocument = bson.toBsonDocument(BsonDocument.class, MongoClient.getDefaultCodecRegistry());
+                    JsonWriterSettings.Builder settingsBuilder = JsonWriterSettings.builder().indent(true);
+                    settingsBuilder.indentCharacters("      ");
+                    stringResult += "[\n" + bsonDocument.toJson(settingsBuilder.build()) + "\n]";
+                }
+                result.setText(stringResult);
+            }
         }
-        //BsonDocument bsonDocument = (BsonDocument) instance.getCollection().aggregate(Arrays.asList(Aggregates.match(Filters.eq(attribut, valeur)))).toBsonDocument(BsonDocument.class, MongoClient.getDefaultCodecRegistry());
-
-
-        result.setText(stringResult);
-    }
+    /* ------------ Research methods  ------------- */
+    /* ---------------------------------------- METHODS ---------------------------------------- */
 }

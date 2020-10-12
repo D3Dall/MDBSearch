@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="405.0" maxWidth="720.0" minHeight="182.0" minWidth="420.0" prefHeight="335.0" prefWidth="491.0" style="-fx-background-color: #737373;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.floriotech.controllers.MessageController">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="11.0" prefHeight="242.0" prefWidth="700.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="11.0">
+         <children>
+            <Text layoutX="11.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message" textAlignment="CENTER" wrappingWidth="453.2734375" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="10.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <JFXButton layoutX="173.0" layoutY="250.0" onAction="#cancel" prefHeight="32.0" prefWidth="128.0" style="-fx-border-color: LIGHTGREY; -fx-border-radius: 5; -fx-border-width: 2; -fx-background-color: LIGHTGREY;" text="OK" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="173.0" AnchorPane.rightAnchor="170.0" />
+            <JFXTextArea fx:id="messageText" editable="false" layoutX="7.0" layoutY="45.0" prefHeight="185.0" prefWidth="453.0" AnchorPane.bottomAnchor="84.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" />
+         </children>
+      </AnchorPane>
+   </children>
+   <effect>
+      <DropShadow height="70.42" radius="33.72" spread="0.24" width="66.46" />
+   </effect>
+</AnchorPane>

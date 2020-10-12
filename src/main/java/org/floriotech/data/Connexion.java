@@ -1,6 +1,6 @@
 package org.floriotech.data;
 
-public class Connexion {
+public class Connexion implements java.io.Serializable {
 
     private String name;
     private String adress;
